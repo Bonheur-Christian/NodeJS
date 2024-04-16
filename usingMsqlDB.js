@@ -1,8 +1,13 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
 const parser = require('body-parser');
+const cors = require('cors')
+
 
 const app = express();
+app.use(cors())
+
+
 app.use(express.urlencoded({ extended: true }));
 
 const mysqlPool = mysql.createPool({
@@ -34,6 +39,7 @@ app.post('/submit', async (req, res) => {
 app.get('/data', async (req, res) => {
     try {
         const connection = await mysqlPool.getConnection();
+        console.log("connection successful");
         const [rows, fields] = await connection.query('SELECT * FROM node_table');
         connection.release();
         res.json(rows);
@@ -49,7 +55,7 @@ app.get('/data', async (req, res) => {
 app.delete('/delete', async (req, res) => {
     try {
         const connection = await mysqlPool.getConnection();
-        const [rows, fields] = await connection.query("DELETE FROM node_table WHERE user_id = 5");
+        const [rows, fields] = await connection.query("DELETE FROM node_table WHERE user_id = 6");
         connection.release();
 
         res.json(rows);
@@ -57,12 +63,12 @@ app.delete('/delete', async (req, res) => {
         console.log(rows);
     } catch (error) {
         console.error("error occured in ur codes", error);
-        res.status(500).send("Internal server error");
+        res.status(500).send("Internal server error", error);
     }
 
 })
 
-const port = 3000;
+const port = 5500;
 
 app.listen(port, () => {
     console.log("App is runnng on port ", port);

@@ -1,20 +1,50 @@
+// const { response } = require("express");
+
 document.addEventListener('DOMContentLoaded', () => {
-    // const account = document.getElementById('account');
-    // fetchDataBtn.addEventListener('click', () => {
-    //     fetch("/data")
-    //         .then(response => response.json)
-    //         .then(data => {
-    //             account.textContent = JSON.stringify(data, null, 2);
-    //         })
-    //         .catch(error => console.log("error in fetching data", error));
-    // })
+    const account = document.getElementById('account');
+    const fetchDataBtn = document.getElementById('userBtn');
+
+    fetchDataBtn.addEventListener('click', () => {
+        fetch("http://localhost:5500/data")
+            .then(response => response.json())
+            .then(data => {
+
+                const name1 = document.createElement("p");// name
+                name1.textContent = "Name:" + data[0].name;
+                account.appendChild(name1);
+
+                const email1 = document.createElement("p");
+                email1.textContent = "Email:" + data[0].email;
+                account.appendChild(email1);//email
+
+                const age1 = document.createElement("p")
+                age1.textContent = "Age:" + data[0].age;
+                account.appendChild(age1);//age
+
+                const name2 = document.createElement("p");
+                name2.textContent = "Name:" + data[1].name;
+                account.appendChild(name2);//name
+
+                const email2 = document.createElement("p");
+                email2.textContent = "Email:" + data[1].email;
+                account.appendChild(email2);//email
+
+                const age2 = document.createElement("p")
+                age2.textContent = "Age:" + data[1].age;
+                account.appendChild(age2);//age
+
+                // account.innerHTML = JSON.stringify(data, null, 1);
+
+            })
+            .catch(error => console.log("error in fetching data", error));
+    })
 
     const deleteButton = document.getElementById("deletebtn");
 
     deleteButton.addEventListener('click', async () => {
         try {
             console.log("button is clicked");
-            const response = await fetch("http://localhost:3000/delete", {
+            const response = await fetch("http://localhost:5500/delete", {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -26,10 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             console.log(result);
-        }catch(error){
-            console.error("error encountered",error);
+        } catch (error) {
+            console.error("error encountered", error);
         }
-   
+
     })
 
 })
